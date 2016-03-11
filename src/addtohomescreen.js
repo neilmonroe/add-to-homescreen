@@ -1,4 +1,6 @@
 /* Add to Homescreen v3.2.2 ~ (c) 2015 Matteo Spinelli ~ @license: http://cubiq.org/license */
+/* Additional modifications by Neil Monroe ~ http://hlkagency.com */
+/* 2016.03.10 - Add option to supply custom icon URL */
 (function (window, document) {
 /*
        _   _ _____     _____
@@ -164,6 +166,7 @@ ath.defaults = {
 	displayPace: 1440,			// minutes before the message is shown again (0: display every time, default 24 hours)
 	maxDisplayCount: 0,			// absolute maximum number of times the message will be shown to the user (0: no limit)
 	icon: true,					// add touch icon to the message
+	iconUrl: null,				// custom icon url to display (if present in message)
 	message: '',				// the message can be customized
 	validLocation: [],			// list of pages where the message will be shown (array of regexes)
 	onInit: null,				// executed on instance creation
@@ -472,7 +475,11 @@ ath.Class.prototype = {
 
 		// try to get the highest resolution application icon
 		if ( !this.applicationIcon ) {
-			if ( ath.OS == 'ios' ) {
+			if ( this.options.iconUrl ) {
+				this.applicationIcon = document.createElement('link');
+				this.applicationIcon.href = this.options.iconUrl;
+			}
+			else if ( ath.OS == 'ios' ) {
 				this.applicationIcon = document.querySelector('head link[rel^=apple-touch-icon][sizes="152x152"],head link[rel^=apple-touch-icon][sizes="144x144"],head link[rel^=apple-touch-icon][sizes="120x120"],head link[rel^=apple-touch-icon][sizes="114x114"],head link[rel^=apple-touch-icon]');
 			} else {
 				this.applicationIcon = document.querySelector('head link[rel^="shortcut icon"][sizes="196x196"],head link[rel^=apple-touch-icon]');
